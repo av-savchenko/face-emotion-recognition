@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private ImageView imageView;
     private Bitmap sampledImage=null;
-    private static int minFaceSize=40;
+    private static int minFaceSize=32;
     private MTCNNModel mtcnnFaceDetector=null;
     private AgeGenderEthnicityTfLiteClassifier facialAttributeClassifier=null;
     private EmotionTfLiteClassifier emotionClassifierTfLite =null;
@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_emotion_tf:
                 if(isImageLoaded()) {
+                    //attributesRecognition(emotionClassifierTfLite);
                     mtcnnDetectionAndAttributesRecognition(emotionClassifierTfLite);
                 }
                 return true;
@@ -237,13 +238,13 @@ public class MainActivity extends AppCompatActivity {
         double scale=Math.min(bmp.getWidth(),bmp.getHeight())/minSize;
         if(scale>1.0) {
             resizedBitmap = Bitmap.createScaledBitmap(bmp, (int)(bmp.getWidth()/scale), (int)(bmp.getHeight()/scale), false);
-            bmp=resizedBitmap;
+            //bmp=resizedBitmap;
         }
         long startTime = SystemClock.uptimeMillis();
         Vector<Box> bboxes = mtcnnFaceDetector.detectFaces(resizedBitmap, minFaceSize);//(int)(bmp.getWidth()*MIN_FACE_SIZE));
         Log.i(TAG, "Timecost to run mtcnn: " + Long.toString(SystemClock.uptimeMillis() - startTime));
 
-        Bitmap tempBmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap tempBmp = Bitmap.createBitmap(resizedBitmap.getWidth(), resizedBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(tempBmp);
         Paint p = new Paint();
         p.setStyle(Paint.Style.STROKE);
@@ -256,24 +257,23 @@ public class MainActivity extends AppCompatActivity {
         Paint p_text = new Paint();
         p_text.setColor(Color.WHITE);
         p_text.setStyle(Paint.Style.FILL);
-        p_text.setColor(Color.GREEN);
+        p_text.setColor(Color.BLUE);
         p_text.setTextSize(24);
 
-        c.drawBitmap(bmp, 0, 0, null);
+        c.drawBitmap(resizedBitmap, 0, 0, null);
 
         for (Box box : bboxes) {
 
             p.setColor(Color.RED);
-            android.graphics.Rect bbox = new android.graphics.Rect(Math.max(0,bmp.getWidth()*box.left() / resizedBitmap.getWidth()),
-                    Math.max(0,bmp.getHeight()* box.top() / resizedBitmap.getHeight()),
-                    bmp.getWidth()* box.right() / resizedBitmap.getWidth(),
-                    bmp.getHeight() * box.bottom() / resizedBitmap.getHeight()
-            );
-
+            android.graphics.Rect bbox = box.transform2Rect();//new android.graphics.Rect(Math.max(0,box.left()),Math.max(0,box.top()),box.right(),box.bottom());
             c.drawRect(bbox, p);
-
             if(classifier!=null && bbox.width()>0 && bbox.height()>0) {
-                Bitmap faceBitmap = Bitmap.createBitmap(bmp, bbox.left, bbox.top, bbox.width(), bbox.height());
+                android.graphics.Rect bboxOrig = new android.graphics.Rect(bbox.left*bmp.getWidth() / resizedBitmap.getWidth(),
+                        bmp.getHeight()* bbox.top / resizedBitmap.getHeight(),
+                        bmp.getWidth()* bbox.right / resizedBitmap.getWidth(),
+                        bmp.getHeight() * bbox.bottom / resizedBitmap.getHeight()
+                );
+                Bitmap faceBitmap = Bitmap.createBitmap(bmp, bboxOrig.left, bboxOrig.top, bboxOrig.width(), bboxOrig.height());
                 Bitmap resultBitmap = Bitmap.createScaledBitmap(faceBitmap, classifier.getImageSizeX(), classifier.getImageSizeY(), false);
                 ClassifierResult res = classifier.classifyFrame(resultBitmap);
                 c.drawText(res.toString(), bbox.left, Math.max(0, bbox.top - 20), p_text);
@@ -308,24 +308,22 @@ public class MainActivity extends AppCompatActivity {
         Paint p_text = new Paint();
         p_text.setColor(Color.WHITE);
         p_text.setStyle(Paint.Style.FILL);
-        p_text.setColor(Color.GREEN);
+        p_text.setColor(Color.BLUE);
         p_text.setTextSize(24);
 
         c.drawBitmap(bmp, 0, 0, null);
 
         for (Box box : bboxes) {
-
+            android.graphics.Rect bbox = box.transform2Rect();//new android.graphics.Rect(Math.max(0,box.left()),Math.max(0,box.top()),box.right(),box.bottom());
             p.setColor(Color.RED);
-            android.graphics.Rect bbox = new android.graphics.Rect(Math.max(0,bmp.getWidth()*box.left() / resizedBitmap.getWidth()),
-                    Math.max(0,bmp.getHeight()* box.top() / resizedBitmap.getHeight()),
-                    bmp.getWidth()* box.right() / resizedBitmap.getWidth(),
-                    bmp.getHeight() * box.bottom() / resizedBitmap.getHeight()
-            );
-
             c.drawRect(bbox, p);
-
             if(emotionClassifierPyTorch!=null && bbox.width()>0 && bbox.height()>0) {
-                Bitmap faceBitmap = Bitmap.createBitmap(bmp, bbox.left, bbox.top, bbox.width(), bbox.height());
+                android.graphics.Rect bboxOrig = new android.graphics.Rect(bbox.left*bmp.getWidth() / resizedBitmap.getWidth(),
+                        bmp.getHeight()* bbox.top / resizedBitmap.getHeight(),
+                        bmp.getWidth()* bbox.right / resizedBitmap.getWidth(),
+                        bmp.getHeight() * bbox.bottom / resizedBitmap.getHeight()
+                );
+                Bitmap faceBitmap = Bitmap.createBitmap(bmp, bboxOrig.left, bboxOrig.top, bboxOrig.width(), bboxOrig.height());
                 String res=emotionClassifierPyTorch.recognize(faceBitmap);
                 c.drawText(res, bbox.left, Math.max(0, bbox.top - 20), p_text);
                 Log.i(TAG, res);
