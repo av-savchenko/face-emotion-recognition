@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import org.pytorch.IValue;
+import org.pytorch.LiteModuleLoader;
 import org.pytorch.Module;
 import org.pytorch.Tensor;
 import org.pytorch.torchvision.TensorImageUtils;
@@ -31,15 +32,14 @@ public class EmotionPyTorchClassifier{
     /** Tag for the {@link Log}. */
     private static final String TAG = "EmotionPyTorch";
 
-    private static final String MODEL_FILE = "mobile_affectnet_vggface2_enet0.pt";
+    private static final String MODEL_FILE = "enet_b2_8.ptl";
     private List<String> labels;
     private Module module=null;
-    private int width=224;
-    private int height=224;
-    private int channels=3;
+    private int width=260;
+    private int height=260;
 
     public EmotionPyTorchClassifier(final Context context) throws IOException {
-        module=Module.load(assetFilePath(context, MODEL_FILE));
+        module= LiteModuleLoader.load(assetFilePath(context, MODEL_FILE));
         loadLabels(context);
     }
     public static String assetFilePath(Context context, String assetName) throws IOException {

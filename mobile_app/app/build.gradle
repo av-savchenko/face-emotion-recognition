@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.asav.facialprocessing"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
     }
@@ -22,9 +22,9 @@ android {
     }
     aaptOptions {
         noCompress "pt"
+        noCompress "ptl"
         noCompress "tflite"
         ignoreAssetsPattern "!age_gender_ethnicity_224_deep-03-0.13-0.97-0.88.pb"
-        ignoreAssetsPattern "!emotions_mobilenet.h5"
     }
 }
 repositories {
@@ -38,12 +38,11 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    implementation 'org.pytorch:pytorch_android:1.8.0'
-    implementation 'org.pytorch:pytorch_android_torchvision:1.8.0'
+    implementation 'org.pytorch:pytorch_android_lite:+'
+    implementation 'org.pytorch:pytorch_android_torchvision:+'
     implementation 'org.tensorflow:tensorflow-android:+'
-    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
-    implementation 'org.tensorflow:tensorflow-lite-support:0.0.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:+'
+    implementation 'org.tensorflow:tensorflow-lite-support:+'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -20,3 +20,9 @@ Here are the accuracies measure on the testing set of above-mentioned datasets:
 Please note, that we report the accuracies for AFEW and VGAFonly on the subsets, in which MTCNN detects facial regions. The code contains also computation of overall accuracy on the complete testing set, which is slightly lower due to the absence of faces or failed face detection.
 
 In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
+
+If you want to run our mobile application, please, run the following scripts inside [mobile_app](mobile_app) folder:
+```
+python to_tflite.py
+python to_pytorchlite.py
+```

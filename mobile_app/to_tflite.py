@@ -23,8 +23,8 @@ def convert_pb(input_model_file, quantize=False):
     with tf.io.gfile.GFile(output_model_file+'.tflite', 'wb') as f:
         f.write(tflite_model)
 
-def convert_h5(input_model_file, quantize=False):
-    output_model_file=os.path.splitext(input_model_file)[0]
+def convert_h5(input_model_file, output_model_file, quantize=False):
+    #output_model_file=os.path.splitext(input_model77_file)[0]
     if quantize:
         output_model_file+='_quant8'
     print(output_model_file)
@@ -37,5 +37,5 @@ def convert_h5(input_model_file, quantize=False):
         f.write(tfmodel)
       
 if __name__ == '__main__':
-    convert_pb('app/src/main/assets/age_gender_ethnicity_224_deep-03-0.13-0.97-0.88.pb', quantize=True)
-    #convert_h5('app/src/main/assets/emotions_mobilenet.h5', quantize=False)
+    convert_pb('app/src/main/assets/age_gender_ethnicity_224_deep-03-0.13-0.97-0.88.pb', quantize=False)
+    convert_h5('../models/affectnet_emotions/mobilenet_7.h5', 'app/src/main/assets/emotions_mobilenet',quantize=False)
