@@ -1,6 +1,6 @@
 This repository contains code of face emotion recognition that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
 
-Our approach is described in the [arXiv paper](https://arxiv.org/abs/2103.17107)
+Our approach is described in the [arXiv paper](https://arxiv.org/abs/2103.17107) published at [IEEE SISY 2021](https://ieeexplore.ieee.org/document/9582508). The extended version of this paper is under considereation in the international journal.
 
 All the models were pre-trained for face identification task using [VGGFace2 dataset](https://github.com/ox-vgg/vgg_face2). In order to train PyTorch models, [SAM code](https://github.com/davda54/sam) was borrowed.
 
