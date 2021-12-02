@@ -18,7 +18,7 @@ public class AgeGenderEthnicityTfLiteClassifier extends TfLiteClassifier{
     /** Tag for the {@link Log}. */
     private static final String TAG = "AgeGenderTfLite";
 
-    private static final String MODEL_FILE ="age_gender_ethnicity_224_deep-03-0.13-0.97-0.88_quant.tflite";
+    private static final String MODEL_FILE ="age_gender_ethnicity_224_deep-03-0.13-0.97-0.88.tflite";
 
     public AgeGenderEthnicityTfLiteClassifier(final Context context) throws IOException {
         super(context,MODEL_FILE);

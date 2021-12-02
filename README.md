@@ -14,9 +14,15 @@ Here are the accuracies measure on the testing set of above-mentioned datasets:
 | [enet_b0_8_best_afew.pt](models/affectnet_emotions/enet_b0_8_best_afew.pt) | 60.95  | 60.18  | 64.63  | 64.54   | 59.89  | 66.80  |
 | [enet_b0_8_best_vgaf.pt](models/affectnet_emotions/enet_b0_8_best_vgaf.pt) | 61.32   | 61.03  | 64.57   | 64.89   | 55.14  | 68.29  |
 | [enet_b0_7.pt](models/affectnet_emotions/enet_b0_7.pt) | -    | - | 65.74   | 65.74   | 56.99  | 65.18  |
-| [enet_b2_8.pt](models/affectnet_emotions/enet_b2_8.pt) | 62.05  | 62.425  | 65.87/66.17   | 56.46  | 67.88  |
+| [enet_b2_8.pt](models/affectnet_emotions/enet_b2_8.pt) | 62.05  | 62.425  | 65.87 | 66.17   | 56.46  | 67.88  |
 | [enet_b2_7.pt](models/affectnet_emotions/enet_b2_7.pt) | -    | - | 65.91   | 66.34   | 59.63  | 69.84  |
 
 Please note, that we report the accuracies for AFEW and VGAFonly on the subsets, in which MTCNN detects facial regions. The code contains also computation of overall accuracy on the complete testing set, which is slightly lower due to the absence of faces or failed face detection.
 
 In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
+
+If you want to run our mobile application, please, run the following scripts inside [mobile_app](mobile_app) folder:
+```
+python to_tflite.py
+python to_pytorchlite.py
+```

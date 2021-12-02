@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.gpu.CompatibilityList;
 import org.tensorflow.lite.support.common.*;
 import org.tensorflow.lite.support.image.*;
 import org.tensorflow.lite.support.image.ops.*;
@@ -44,12 +45,15 @@ public abstract class TfLiteClassifier {
     public TfLiteClassifier(final Context context, String model_path) throws IOException {
         //GpuDelegate delegate = new GpuDelegate();
         Interpreter.Options options = (new Interpreter.Options()).setNumThreads(4);//.addDelegate(delegate);
-        if (false) {
+        CompatibilityList compatList = new CompatibilityList();
+        boolean hasGPU=compatList.isDelegateSupportedOnThisDevice();
+        if (hasGPU) {
             org.tensorflow.lite.gpu.GpuDelegate.Options opt=new org.tensorflow.lite.gpu.GpuDelegate.Options();
             opt.setInferencePreference(org.tensorflow.lite.gpu.GpuDelegate.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED);
-            org.tensorflow.lite.gpu.GpuDelegate delegate = new org.tensorflow.lite.gpu.GpuDelegate();
+            org.tensorflow.lite.gpu.GpuDelegate delegate = new org.tensorflow.lite.gpu.GpuDelegate(opt);
             options.addDelegate(delegate);
         }
+
 
         MappedByteBuffer tfliteModel= FileUtil.loadMappedFile(context,model_path);
         tflite = new Interpreter(tfliteModel,options);
