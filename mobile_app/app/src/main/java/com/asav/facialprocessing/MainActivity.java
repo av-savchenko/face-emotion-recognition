@@ -3,14 +3,18 @@ package com.asav.facialprocessing;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuCompat;
 
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.media.ExifInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
@@ -21,13 +25,22 @@ import com.asav.facialprocessing.mtcnn.Box;
 import com.asav.facialprocessing.mtcnn.MTCNNModel;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.*;
+import androidx.camera.core.*;
+import androidx.camera.core.Preview.OnPreviewOutputUpdateListener;
+import androidx.camera.core.Preview.PreviewOutput;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private ImageView imageView;
     private Bitmap sampledImage=null;
+    private MenuItem checkBoxTorchTf=null;
+
+    private HandlerThread mBackgroundThread=null;
+    private Handler mBackgroundHandler=null;
+
     private static int minFaceSize=32;
     private MTCNNModel mtcnnFaceDetector=null;
     private AgeGenderEthnicityTfLiteClassifier facialAttributeClassifier=null;
@@ -51,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        checkBoxTorchTf=menu.findItem(R.id.action_emotion_tf_or_torch);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return true;
     }
 
@@ -134,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final int SELECT_PICTURE = 1;
-    private static final int SELECT_TEMPLATE_PICTURE_MATCH = 2;
     private void openImageFile(int requestCode){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -145,28 +159,43 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_openGallery:
-                openImageFile(SELECT_PICTURE);
-                return true;
-
-            case R.id.action_detectface_mtcnn:
-                if(isImageLoaded()) {
-                    mtcnnDetectionAndAttributesRecognition(null);
+                if(!isCameraRunning()) {
+                    openImageFile(SELECT_PICTURE);
                 }
                 return true;
+            /*case R.id.action_detectface_mtcnn:
+                if(isImageLoaded() && !isCameraRunning()) {
+                    mtcnnDetectionAndAttributesRecognition(null);
+                }
+                return true;*/
             case R.id.action_agegender:
-                if(isImageLoaded()) {
+                if(isImageLoaded() && !isCameraRunning()) {
                     mtcnnDetectionAndAttributesRecognition(facialAttributeClassifier);
                 }
                 return true;
-            case R.id.action_emotion_tf:
-                if(isImageLoaded()) {
-                    //attributesRecognition(emotionClassifierTfLite);
-                    mtcnnDetectionAndAttributesRecognition(emotionClassifierTfLite);
+            case R.id.action_emotion:
+                if(!isCameraRunning()) {
+                    recognizeEmotions();
                 }
                 return true;
-            case R.id.action_emotion_torch:
-                if(isImageLoaded()) {
-                    mtcnnDetectionAndEmotionPyTorchRecognition();
+            case R.id.action_emotion_tf_or_torch:
+                if(!isCameraRunning()) {
+                    if (item.isChecked()) {
+                        item.setChecked(false);
+                    } else {
+                        item.setChecked(true);
+                    }
+                    recognizeEmotions();
+                }
+                return true;
+            case R.id.action_capturecamera:
+                if(mBackgroundThread==null){
+                    item.setTitle(R.string.action_StopCamera);
+                    setupCameraX();
+                }
+                else{
+                    item.setTitle(R.string.action_CaptureCamera);
+                    stopCamera();
                 }
                 return true;
             default:
@@ -174,6 +203,16 @@ public class MainActivity extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void recognizeEmotions(){
+        if(isImageLoaded()) {
+            if (checkBoxTorchTf.isChecked()) {
+                mtcnnDetectionAndAttributesRecognition(emotionClassifierTfLite);
+            } else {
+                mtcnnDetectionAndEmotionPyTorchRecognition();
+            }
+        }
+
     }
     private Bitmap getImage(Uri selectedImageUri)
     {
@@ -210,7 +249,13 @@ public class MainActivity extends AppCompatActivity {
         }
         return bmp;
     }
-
+    private boolean isCameraRunning(){
+        if(mBackgroundThread!=null)
+            Toast.makeText(getApplicationContext(),
+                    "Stop camera firstly",
+                    Toast.LENGTH_SHORT).show();
+        return mBackgroundThread!=null;
+    }
     private boolean isImageLoaded(){
         if(sampledImage==null)
             Toast.makeText(getApplicationContext(),
@@ -218,6 +263,16 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         return sampledImage!=null;
     }
+    private void setImage(Bitmap bitmap){
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                imageView.setImageBitmap(bitmap);
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -227,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "uri" + selectedImageUri);
                 sampledImage=getImage(selectedImageUri);
                 if(sampledImage!=null)
-                    imageView.setImageBitmap(sampledImage);
+                    setImage(sampledImage);
             }
         }
     }
@@ -268,19 +323,22 @@ public class MainActivity extends AppCompatActivity {
             android.graphics.Rect bbox = box.transform2Rect();//new android.graphics.Rect(Math.max(0,box.left()),Math.max(0,box.top()),box.right(),box.bottom());
             c.drawRect(bbox, p);
             if(classifier!=null && bbox.width()>0 && bbox.height()>0) {
-                android.graphics.Rect bboxOrig = new android.graphics.Rect(bbox.left*bmp.getWidth() / resizedBitmap.getWidth(),
-                        bmp.getHeight()* bbox.top / resizedBitmap.getHeight(),
-                        bmp.getWidth()* bbox.right / resizedBitmap.getWidth(),
-                        bmp.getHeight() * bbox.bottom / resizedBitmap.getHeight()
+                int w=bmp.getWidth();
+                int h=bmp.getHeight();
+                android.graphics.Rect bboxOrig = new android.graphics.Rect(
+                        Math.max(0,w*bbox.left / resizedBitmap.getWidth()),
+                        Math.max(0,h*bbox.top / resizedBitmap.getHeight()),
+                        Math.min(w,w * bbox.right / resizedBitmap.getWidth()),
+                        Math.min(h,h * bbox.bottom / resizedBitmap.getHeight())
                 );
                 Bitmap faceBitmap = Bitmap.createBitmap(bmp, bboxOrig.left, bboxOrig.top, bboxOrig.width(), bboxOrig.height());
                 Bitmap resultBitmap = Bitmap.createScaledBitmap(faceBitmap, classifier.getImageSizeX(), classifier.getImageSizeY(), false);
                 ClassifierResult res = classifier.classifyFrame(resultBitmap);
-                c.drawText(res.toString(), bbox.left, Math.max(0, bbox.top - 20), p_text);
+                c.drawText(res.toString(), Math.max(0,bbox.left), Math.max(0, bbox.top - 20), p_text);
                 Log.i(TAG, res.toString());
             }
         }
-        imageView.setImageBitmap(tempBmp);
+        setImage(tempBmp);
     }
     private void mtcnnDetectionAndEmotionPyTorchRecognition(){
         Bitmap bmp = sampledImage;
@@ -318,18 +376,94 @@ public class MainActivity extends AppCompatActivity {
             p.setColor(Color.RED);
             c.drawRect(bbox, p);
             if(emotionClassifierPyTorch!=null && bbox.width()>0 && bbox.height()>0) {
-                android.graphics.Rect bboxOrig = new android.graphics.Rect(bbox.left*bmp.getWidth() / resizedBitmap.getWidth(),
-                        bmp.getHeight()* bbox.top / resizedBitmap.getHeight(),
-                        bmp.getWidth()* bbox.right / resizedBitmap.getWidth(),
-                        bmp.getHeight() * bbox.bottom / resizedBitmap.getHeight()
+                int w=bmp.getWidth();
+                int h=bmp.getHeight();
+                android.graphics.Rect bboxOrig = new android.graphics.Rect(
+                        Math.max(0,w*bbox.left / resizedBitmap.getWidth()),
+                        Math.max(0,h*bbox.top / resizedBitmap.getHeight()),
+                        Math.min(w,w * bbox.right / resizedBitmap.getWidth()),
+                        Math.min(h,h * bbox.bottom / resizedBitmap.getHeight())
                 );
                 Bitmap faceBitmap = Bitmap.createBitmap(bmp, bboxOrig.left, bboxOrig.top, bboxOrig.width(), bboxOrig.height());
                 String res=emotionClassifierPyTorch.recognize(faceBitmap);
-                c.drawText(res, bbox.left, Math.max(0, bbox.top - 20), p_text);
+                c.drawText(res, Math.max(0,bbox.left), Math.max(0, bbox.top - 20), p_text);
                 Log.i(TAG, res);
             }
         }
-        imageView.setImageBitmap(tempBmp);
+        setImage(tempBmp);
     }
 
+
+    private void setupCameraX() {
+        PreviewConfig previewConfig = new PreviewConfig.Builder()
+                .setLensFacing(CameraX.LensFacing.FRONT)
+                .build();
+        Preview preview = new Preview(previewConfig);
+        mBackgroundThread = new HandlerThread("AnalysisThread");
+        mBackgroundThread.start();
+        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+
+        ImageAnalysis imageAnalysis = new ImageAnalysis(new ImageAnalysisConfig.Builder()
+                .setLensFacing(CameraX.LensFacing.FRONT)
+                .setCallbackHandler(mBackgroundHandler)
+                .setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
+                .build());
+        imageAnalysis.setAnalyzer(
+                new ImageAnalysis.Analyzer() {
+                    public void analyze(ImageProxy image, int rotationDegrees) {
+                        sampledImage=imgToBitmap(image.getImage(), rotationDegrees);
+                        recognizeEmotions();
+                    }
+                }
+        );
+
+        CameraX.unbindAll();
+        CameraX.bindToLifecycle(this, preview, imageAnalysis);
+    }
+
+    private Bitmap imgToBitmap(Image image, int rotationDegrees) {
+        // NV21 is a plane of 8 bit Y values followed by interleaved  Cb Cr
+        ByteBuffer ib = ByteBuffer.allocate(image.getHeight() * image.getWidth() * 2);
+
+        ByteBuffer y = image.getPlanes()[0].getBuffer();
+        ByteBuffer cr = image.getPlanes()[1].getBuffer();
+        ByteBuffer cb = image.getPlanes()[2].getBuffer();
+        ib.put(y);
+        ib.put(cb);
+        ib.put(cr);
+
+        YuvImage yuvImage = new YuvImage(ib.array(),
+                ImageFormat.NV21, image.getWidth(), image.getHeight(), null);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        yuvImage.compressToJpeg(new Rect(0, 0,
+                image.getWidth(), image.getHeight()), 50, out);
+        byte[] imageBytes = out.toByteArray();
+        Bitmap bm = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        Bitmap bitmap = bm;
+
+        // On android the camera rotation and the screen rotation
+        // are off by 90 degrees, so if you are capturing an image
+        // in "portrait" orientation, you'll need to rotate the image.
+        if (rotationDegrees != 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotationDegrees);
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm,
+                    bm.getWidth(), bm.getHeight(), true);
+            bitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        }
+        return bitmap;
+    }
+    private void stopCamera() {
+        CameraX.unbindAll();
+        mBackgroundThread.quitSafely();
+        try {
+            mBackgroundThread.join();
+        } catch (InterruptedException e) {
+            Log.e(TAG, "Exception stoppingCamera!", e);
+        }
+        mBackgroundThread = null;
+        mBackgroundHandler = null;
+    }
 }

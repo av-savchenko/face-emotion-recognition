@@ -3,9 +3,10 @@
     <string name="action_OpenGallery">Open...</string>
     <string name="action_DetectFaceMTCNN">Detect face (MTCNN)</string>
     <string name="action_RecognizeAgeGender">Age and gender</string>
-    <string name="action_RecognizeEmotionTf">Emotion (TF)</string>
-    <string name="action_RecognizeEmotionTorch">Emotion (Torch)</string>
+    <string name="action_RecognizeEmotion">Emotion</string>
     <string name="action_CaptureCamera">Capture Camera</string>
+    <string name="action_StopCamera">Stop Camera</string>
+    <string name="action_EmotionModel">Torch model?</string>
 
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>

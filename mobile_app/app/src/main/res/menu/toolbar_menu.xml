@@ -5,21 +5,31 @@
         android:id="@+id/action_openGallery"
         app:showAsAction="never"
         android:title="@string/action_OpenGallery"/>
+    <!--
     <item
         android:id="@+id/action_detectface_mtcnn"
         app:showAsAction="never"
         android:title="@string/action_DetectFaceMTCNN"/>
+       -->
     <item
         android:id="@+id/action_agegender"
         app:showAsAction="never"
         android:title="@string/action_RecognizeAgeGender"/>
-    <item
-        android:id="@+id/action_emotion_tf"
-        app:showAsAction="never"
-        android:title="@string/action_RecognizeEmotionTf"/>
-    <item
-        android:id="@+id/action_emotion_torch"
-        app:showAsAction="never"
-        android:title="@string/action_RecognizeEmotionTorch"/>
+    <group android:id="@+id/emotions">
+        <item
+            android:id="@+id/action_emotion_tf_or_torch"
+            app:showAsAction="never"
+            android:title="@string/action_EmotionModel"
+            android:checkable="true"
+            />
+        <item
+            android:id="@+id/action_emotion"
+            app:showAsAction="never"
+            android:title="@string/action_RecognizeEmotion"/>
+        <item
+            android:id="@+id/action_capturecamera"
+            app:showAsAction="never"
+            android:title="@string/action_CaptureCamera"/>
+    </group>
 
 </menu>
