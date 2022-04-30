@@ -2,6 +2,8 @@ This repository contains code of face emotion recognition that was developed in 
 
 Our approach is described in the [arXiv paper](https://arxiv.org/abs/2103.17107) published at [IEEE SISY 2021](https://ieeexplore.ieee.org/document/9582508). The extended version of this paper is under considereation in the international journal.
 
+NEWS!!! Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
+
 All the models were pre-trained for face identification task using [VGGFace2 dataset](https://github.com/ox-vgg/vgg_face2). In order to train PyTorch models, [SAM code](https://github.com/davda54/sam) was borrowed.
 
 We upload several [models](models/affectnet_emotions) that obtained the state-of-the-art results for [AffectNet dataset](http://mohammadmahoor.com/affectnet/). The facial features extracted by these models lead to the state-of-the-art accuracy of face-only models on video datasets from EmotiW [2019](https://sites.google.com/view/emotiw2019), [2020](https://sites.google.com/view/emotiw2020) challenges: [AFEW (Acted Facial Expression In The Wild)](https://cs.anu.edu.au/few/AFEW.html), [VGAF (Video level Group AFfect)](https://ieeexplore.ieee.org/document/8925231) and [EngageWild](https://ieeexplore.ieee.org/document/8615851).
