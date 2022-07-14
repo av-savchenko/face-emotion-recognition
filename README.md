@@ -1,8 +1,42 @@
 This repository contains code of face emotion recognition that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
 
-Our approach is described in the [arXiv paper](https://arxiv.org/abs/2103.17107) published at [IEEE SISY 2021](https://ieeexplore.ieee.org/document/9582508). The extended version of this paper is under considereation in the international journal.
+If you use our models, please cite the following papers:
+```BibTex
+@inproceedings{savchenko2021facial,
+  title={Facial expression and attributes recognition based on multi-task learning of lightweight neural networks},
+  author={Savchenko, Andrey V.},
+  booktitle={Proceedings of the 19th International Symposium on Intelligent Systems and Informatics (SISY)},
+  pages={119--124},
+  year={2021},
+  organization={IEEE},
+  url={https://arxiv.org/abs/2103.17107}
+}
+```
 
-NEWS!!! Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
+```BibTex
+@inproceedings{Savchenko_2022_CVPRW,
+  author    = {Savchenko, Andrey V.},
+  title     = {Video-Based Frame-Level Facial Analysis of Affective Behavior on Mobile Devices Using EfficientNets},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+  month     = {June},
+  year      = {2022},
+  pages     = {2359-2366},
+  url={https://arxiv.org/abs/2103.17107}
+}
+```
+
+```BibTex
+@article{savchenko2022classifying,
+  title={Classifying emotions and engagement in online learning based on a single facial expression recognition neural network},
+  author={Savchenko, Andrey V and Savchenko, Lyudmila V and Makarov, Ilya},
+  journal={IEEE Transactions on Affective Computing},
+  year={2022},
+  publisher={IEEE},
+  url={https://ieeexplore.ieee.org/document/9815154}
+}
+```
+
+**[News]** Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
 
 All the models were pre-trained for face identification task using [VGGFace2 dataset](https://github.com/ox-vgg/vgg_face2). In order to train PyTorch models, [SAM code](https://github.com/davda54/sam) was borrowed.
 
