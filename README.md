@@ -49,6 +49,7 @@ Here are the accuracies measure on the testing set of above-mentioned datasets:
 | [mobilenet_7.h5](models/affectnet_emotions/mobilenet_7.h5) | -  |  -  | 64.71   |  -  | 55.35 | 68.92  |
 | [enet_b0_8_best_afew.pt](models/affectnet_emotions/enet_b0_8_best_afew.pt) | 60.95  | 60.18  | 64.63  | 64.54   | 59.89  | 66.80  |
 | [enet_b0_8_best_vgaf.pt](models/affectnet_emotions/enet_b0_8_best_vgaf.pt) | 61.32   | 61.03  | 64.57   | 64.89   | 55.14  | 68.29  |
+| [enet_b0_8_va_mtl.pt](models/affectnet_emotions/enet_b0_8_va_mtl.pt) | 61.93   | -  | 64.94   | -   | 56.73  | 66.58  |
 | [enet_b0_7.pt](models/affectnet_emotions/enet_b0_7.pt) | -    | - | 65.74   | 65.74   | 56.99  | 65.18  |
 | [enet_b2_8.pt](models/affectnet_emotions/enet_b2_8.pt) | 63.025  | 62.40  | 66.29 | -   | 57.78  | 70.23  |
 | [enet_b2_7.pt](models/affectnet_emotions/enet_b2_7.pt) | -    | - | 65.91   | 66.34   | 59.63  | 69.84  |
