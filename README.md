@@ -1,4 +1,4 @@
-This repository contains code of face emotion recognition that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
+This repository contains code of HSEmotions (High-Speed face Emotion recognition) library that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
 
 If you use our models, please cite the following papers:
 ```BibTex
