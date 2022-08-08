@@ -1,4 +1,7 @@
-This repository contains code of HSEmotions (High-Speed face Emotion recognition) library that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
+# HSEmotions (High-Speed face Emotion recognition) library
+This repository contains code that was developed in the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
+
+## Research papers
 
 If you use our models, please cite the following papers:
 ```BibTex
@@ -36,8 +39,11 @@ If you use our models, please cite the following papers:
 }
 ```
 
-**[News]** Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
+## News
+- Our models let our team HSE-NN took the first place in the Learning from Synthetic Data (LSD) Challenge and the 3rd place in the Multi-Task Learning (MTL) Challenge in the [fourth Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/eccv-2023-4th-abaw/)
+- Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
 
+## Details
 All the models were pre-trained for face identification task using [VGGFace2 dataset](https://github.com/ox-vgg/vgg_face2). In order to train PyTorch models, [SAM code](https://github.com/davda54/sam) was borrowed.
 
 We upload several [models](models/affectnet_emotions) that obtained the state-of-the-art results for [AffectNet dataset](http://mohammadmahoor.com/affectnet/). The facial features extracted by these models lead to the state-of-the-art accuracy of face-only models on video datasets from EmotiW [2019](https://sites.google.com/view/emotiw2019), [2020](https://sites.google.com/view/emotiw2020) challenges: [AFEW (Acted Facial Expression In The Wild)](https://cs.anu.edu.au/few/AFEW.html), [VGAF (Video level Group AFfect)](https://ieeexplore.ieee.org/document/8925231) and [EngageWild](https://ieeexplore.ieee.org/document/8615851).
@@ -55,6 +61,9 @@ Here are the accuracies measure on the testing set of above-mentioned datasets:
 | [enet_b2_7.pt](models/affectnet_emotions/enet_b2_7.pt) | -    | - | 65.91   | 66.34   | 59.63  | 69.84  |
 
 Please note, that we report the accuracies for AFEW and VGAFonly on the subsets, in which MTCNN detects facial regions. The code contains also computation of overall accuracy on the complete testing set, which is slightly lower due to the absence of faces or failed face detection.
+
+## Usage
+A special [python package](python-package) was prepared to simplify the usage of our models for face expression recognition and extraction of visual emotional embeddings.
 
 In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
 
