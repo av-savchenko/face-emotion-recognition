@@ -1,4 +1,4 @@
-# HSEmotions (High-Speed face Emotion recognition) library
+# HSEmotion (High-Speed face Emotion recognition) library
 This repository contains code that was developed at the HSE University during the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach).
 
 ## Research papers
