@@ -15,7 +15,7 @@ import urllib
 
 def get_model_path(model_name):
     model_file=model_name+'.pt'
-    cache_dir = os.path.join(os.path.expanduser('~'), '.hsemotions')
+    cache_dir = os.path.join(os.path.expanduser('~'), '.hsemotion')
     os.makedirs(cache_dir, exist_ok=True)
     fpath=os.path.join(cache_dir,model_file)
     if not os.path.isfile(fpath):
