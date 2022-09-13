@@ -32,11 +32,11 @@ public class EmotionPyTorchClassifier{
     /** Tag for the {@link Log}. */
     private static final String TAG = "EmotionPyTorch";
 
-    private static final String MODEL_FILE = "enet_b2_8.ptl";
+    private static final String MODEL_FILE = "enet_b0_8_best_vgaf.ptl";//"enet_b0_8_va_mtl.ptl";//"enet_b2_8.ptl";
     private List<String> labels;
     private Module module=null;
-    private int width=260;
-    private int height=260;
+    //private int width=260, height=260;
+    private int width=224, height=224;
 
     public EmotionPyTorchClassifier(final Context context) throws IOException {
         module= LiteModuleLoader.load(assetFilePath(context, MODEL_FILE));
@@ -83,8 +83,9 @@ public class EmotionPyTorchClassifier{
     public String recognize(Bitmap bitmap){
         Pair<Long,float[]> res =  classifyImage(bitmap);
         final float[] scores=res.second;
-        Integer index[] = new Integer[scores.length];
-        for (int i = 0; i < scores.length; i++) {
+        int numEmotions=Math.min(labels.size(),scores.length);
+        Integer index[] = new Integer[numEmotions];
+        for (int i = 0; i < numEmotions; i++) {
             index[i]=i;
         }
         Arrays.sort(index, new Comparator<Integer>() {

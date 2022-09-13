@@ -4,9 +4,15 @@ from torch.utils.mobile_optimizer import optimize_for_mobile
 
 if __name__ == '__main__':
     output_model_dir='app/src/main/assets/'
-    INPUT_SIZE=260 #224
+    if False:
+        INPUT_SIZE=260 
+        filename='enet_b2_8'
+    else:
+        INPUT_SIZE=224
+        #filename='enet_b0_8_best_vgaf'
+        filename='enet_b0_8_va_mtl'
+    
     example = torch.rand(1, 3, INPUT_SIZE, INPUT_SIZE)
-    filename='enet_b2_8'
     model=torch.load('../models/affectnet_emotions/'+filename+'.pt').cpu()
     model.eval()
     traced_script_module = torch.jit.trace(model, example)

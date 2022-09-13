@@ -207,9 +207,9 @@ public class MainActivity extends AppCompatActivity {
     private void recognizeEmotions(){
         if(isImageLoaded()) {
             if (checkBoxTorchTf.isChecked()) {
-                mtcnnDetectionAndAttributesRecognition(emotionClassifierTfLite);
-            } else {
                 mtcnnDetectionAndEmotionPyTorchRecognition();
+            } else {
+                mtcnnDetectionAndAttributesRecognition(emotionClassifierTfLite);
             }
         }
 

@@ -48,9 +48,7 @@ public abstract class TfLiteClassifier {
         CompatibilityList compatList = new CompatibilityList();
         boolean hasGPU=compatList.isDelegateSupportedOnThisDevice();
         if (hasGPU) {
-            org.tensorflow.lite.gpu.GpuDelegate.Options opt=new org.tensorflow.lite.gpu.GpuDelegate.Options();
-            opt.setInferencePreference(org.tensorflow.lite.gpu.GpuDelegate.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED);
-            org.tensorflow.lite.gpu.GpuDelegate delegate = new org.tensorflow.lite.gpu.GpuDelegate(opt);
+            org.tensorflow.lite.gpu.GpuDelegate delegate = new org.tensorflow.lite.gpu.GpuDelegate();
             options.addDelegate(delegate);
         }
 
@@ -109,7 +107,7 @@ public abstract class TfLiteClassifier {
             ith_output.rewind();
         }
         long endTime = SystemClock.uptimeMillis();
-        Log.i(TAG, "tf lite timecost to run model inference: " + Long.toString(endTime - startTime));
+        Log.i(TAG, "tf lite Timecost to run model inference: " + Long.toString(endTime - startTime));
 
         return getResults(outputs);
     }
