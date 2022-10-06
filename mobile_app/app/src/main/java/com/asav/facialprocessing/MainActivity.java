@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.widget.*;
 
 import com.asav.facialprocessing.mtcnn.Box;
-import com.asav.facialprocessing.mtcnn.MTCNNModel;
+import com.asav.facialprocessing.mtcnn.MTCNN;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mBackgroundHandler=null;
 
     private static int minFaceSize=32;
-    private MTCNNModel mtcnnFaceDetector=null;
+    private MTCNN mtcnnFaceDetector=null;
     private AgeGenderEthnicityTfLiteClassifier facialAttributeClassifier=null;
     private EmotionTfLiteClassifier emotionClassifierTfLite =null;
     private EmotionPyTorchClassifier emotionClassifierPyTorch = null;
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "Exception initializing EmotionPyTorchClassifier!", e);
         }
         try {
-            mtcnnFaceDetector =MTCNNModel.Companion.create(getAssets());
+            mtcnnFaceDetector =new MTCNN(getApplicationContext());
         } catch (final Exception e) {
             Log.e(TAG, "Exception initializing MTCNNModel!"+e);
         }

@@ -32,7 +32,7 @@ public class EmotionPyTorchClassifier{
     /** Tag for the {@link Log}. */
     private static final String TAG = "EmotionPyTorch";
 
-    private static final String MODEL_FILE = "enet_b0_8_best_vgaf.ptl";//"enet_b0_8_va_mtl.ptl";//"enet_b2_8.ptl";
+    private static final String MODEL_FILE = "enet_b0_8_va_mtl.ptl";//"enet_b0_8_best_vgaf.ptl";//"enet_b2_8.ptl";
     private List<String> labels;
     private Module module=null;
     //private int width=260, height=260;
