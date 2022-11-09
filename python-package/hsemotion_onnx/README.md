@@ -16,8 +16,8 @@ The code of HSEmotionONNX Python Library is released under the Apache-2.0 Licens
 ```
     from hsemotion_onnx.facial_emotions import HSEmotionRecognizer
     model_name='enet_b0_8_best_afew'
-    fer=HSEmotionRecognizer(model_name=model_name,device='cpu')
-    emotion,scores=fer.predict_emotions(face_img,logits=True)
+    fer=HSEmotionRecognizer(model_name=model_name)
+    emotion,scores=fer.predict_emotions(face_img,logits=False)
 ```
 
 The following values of `model_name` parameter are supported:
@@ -36,4 +36,4 @@ The versions of this method for a batch of images are also available
     emotions,scores=fer.predict_multi_emotions(face_img_list,logits=False)
 ```
 
-The usage example is available in the [test_hsemotion_onnx.py](../src/onnx/test_hsemotion_onnx.py)
+The usage example is available in the [onnx folder](../../src/onnx)
