@@ -30,12 +30,12 @@ Here are the performance metrics (accuracy on AffectNet, AFEW and VGAF), F1-scor
 Please note, that we report the accuracies for AFEW and VGAF only on the subsets, in which MTCNN detects facial regions. The code contains also computation of overall accuracy on the complete testing set, which is slightly lower due to the absence of faces or failed face detection.
 
 ## Usage
-A special [python package](python-package) was prepared to simplify the usage of our models for face expression recognition and extraction of visual emotional embeddings. It can be installed via pip:
+Special [python packages](python-package) were prepared to simplify the usage of our models for face expression recognition and extraction of visual emotional embeddings. It can be installed via pip:
 ```
     pip install hsemotion
 ```
 
-In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
+In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/affectnet/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
 
 If you want to run our mobile application, please, run the following scripts inside [mobile_app](mobile_app) folder:
 ```
