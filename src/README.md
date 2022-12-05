@@ -1,5 +1,4 @@
 This directory contains several auxiliary Python files and the following folders and Jupyter Notebooks:
-- [engagement](engagement): training regression models on top of our emotional features for the EngageWild dataset from the EmotiW challenges
 - [ABAW](ABAW): training classifier on top of our emotional features for the third and fourth ABAW challenges
 - [affectnet](affectnet): training code ofor emotional features, including 
     - [train_emotions-pytorch.ipynb](affectnet/train_emotions-pytorch.ipynb): the **main file** in this repository. It contains the training of our EmotiEffNet models, such as [EmotiEffNet-B2](../models/affectnet_emotions/enet_b2_8_best.pt) and classification of emotional features for AFEW and VGAF datasets. It is necessary to run preprocessing of the datasets from train_emotions.ipynb, AFEW_train.ipynb and VGAF_train.ipynb
