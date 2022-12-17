@@ -9,7 +9,6 @@ This directory contains several auxiliary Python files and the following folders
 - [train_ramas.ipynb](train_ramas.ipynb): the processing of RAMAS dataset and training code for classifiers on top of our models (both PyTorch and TensorFlow)
 - [video_summarizer.ipynb](video_summarizer.ipynb): processing of recording of online conference with facial clustering and creation of gif files with emotions of every face
 - [display_emotions.ipynb](display_emotions.ipynb): examples of usages of our models (both PyTorch and TensorFlow) and visualization of their predictions using GradCam
-- [test_hsemotion_package.ipynb](test_hsemotion_package.ipynb): examples of usages of our HSEmotion library
 
 
 

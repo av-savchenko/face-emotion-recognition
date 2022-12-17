@@ -6,11 +6,11 @@ import onnxruntime as ort
 def convert_pt_to_onnx(model_name, img_size=224):
     print('Processing',model_name,img_size)
     dummy_input = torch.randn(1, 3, img_size, img_size)
-    model=torch.load(f'../../models/affectnet_emotions/{model_name}.pt')
+    model=torch.load(f'../models/affectnet_emotions/{model_name}.pt')
     model.eval()
     torch_out=model(dummy_input)
 
-    onnx_file=f'../../models/affectnet_emotions/onnx/{model_name}.onnx'
+    onnx_file=f'../models/affectnet_emotions/onnx/{model_name}.onnx'
     torch.onnx.export(model, dummy_input, onnx_file, opset_version=11,do_constant_folding=True,export_params=True,input_names=['input'],output_names=['output'],dynamic_axes={'input':{0:'batch_size'},'output':{0:'batch_size'}})
 
     onnx_model=onnx.load(onnx_file)
