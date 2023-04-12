@@ -78,6 +78,19 @@ If you use our models, please cite the following papers:
 ```
 
 ```BibTex
+@inproceedings{Savchenko_2022_ECCVW,
+  author    = {Savchenko, Andrey V.},
+  title     = {{MT-EmotiEffNet} for Multi-task Human Affective Behavior Analysis and Learning from Synthetic Data},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV 2022) Workshops},
+  pages={45--59},
+  year={2023},
+  organization={Springer},
+  url={https://arxiv.org/abs/2207.09508}
+}
+```
+
+
+```BibTex
 @article{savchenko2022classifying,
   title={Classifying emotions and engagement in online learning based on a single facial expression recognition neural network},
   author={Savchenko, Andrey V and Savchenko, Lyudmila V and Makarov, Ilya},
