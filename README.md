@@ -55,6 +55,22 @@ pip install timm==0.4.5
 
 If you use our models, please cite the following papers:
 ```BibTex
+@inproceedings{savchenko2023facial,
+  title = 	 {Facial Expression Recognition with Adaptive Frame Rate based on Multiple Testing Correction},
+  author =       {Savchenko, Andrey},
+  booktitle = 	 {Proceedings of the 40th International Conference on Machine Learning (ICML)},
+  pages = 	 {30119--30129},
+  year = 	 {2023},
+  editor = 	 {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
+  volume = 	 {202},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--29 Jul},
+  publisher =    {PMLR},
+  url={https://proceedings.mlr.press/v202/savchenko23a.html}
+}
+```
+
+```BibTex
 @inproceedings{savchenko2021facial,
   title={Facial expression and attributes recognition based on multi-task learning of lightweight neural networks},
   author={Savchenko, Andrey V.},
