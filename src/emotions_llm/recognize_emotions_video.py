@@ -23,8 +23,6 @@ recognized_text=''
 ai_answer=''
 recognized_emotion=''
 
-recognized_text="What is the angry one-paragraph response to suggestion of implementing emotional responses to a personalized assistant?"
-ai_answer='angry: The suggestion of implementing emotional responses to a personalized assistant is not only misguided but also deeply concerning from an ethical standpoint. By imbuing an AI with emotional capabilities, we are inadvertently creating a false sense of empathy and understanding, which can lead to manipulation and exploitation. Furthermore, this approach undermines the importance of genuine human connection and may contribute to the further isolation of individuals who rely on these assistants for companionship. It is crucial that we prioritize the development of meaningful, supportive interactions between humans and focus on enhancing the emotional intelligence of AI in a way that respects and complements human emotions, rather than replacing them.'
 
 #===============
 emotions=["happy","sad","fear","angry"]
@@ -32,7 +30,8 @@ colors=[(0,128,0),(128,0,0),(128, 0, 128),(0,0,255)] #bgr
 
 emotion_prompt="What is the {} one-paragraph response to "
 additional_emotion_prompt="What is the {} one-paragraph response to the initial question?"
-aggregation_prompt="Aggregate the answers to form a final response to "
+aggregation_prompt="Aggregate the answers to form a final response "
+user_emotion_prompt=". Take into account that I am {} now."
 
 #question2="suggestion of implementing emotional answers in a personalized assistant"
 
@@ -42,12 +41,15 @@ def get_emotion_prompt(emotion,prompt):
 def get_additional_emotion_prompt(emotion):
     return additional_emotion_prompt.format(emotion)
 
-import time
+def get_aggregation_prompt(user_emotion):
+    return aggregation_prompt if user_emotion=='neutral' else aggregation_prompt+user_emotion_prompt.format(user_emotion)
 
-def print_multiple_emotional_agents2(question):
+def process_multiple_emotional_agents2(question,user_emotion='neutral', delay=5):
     global ai_answer
     messages=[]
     for i,emotion in enumerate(emotions):
+        if stopEvent.is_set():
+            return
         if i==0:
             messages.append({
               "role": "user",
@@ -65,15 +67,15 @@ def print_multiple_emotional_agents2(question):
         })
         print(emotion,assistant,"\n\n")
         ai_answer=emotion+": "+assistant
-        time.sleep(5)
+        time.sleep(delay)
         
     messages.append({
       "role": "user",
-      "content": aggregation_prompt
+      "content": get_aggregation_prompt(user_emotion)
     })
     assistant=get_completion_from_messages(messages)
     print('Summary:',assistant)
-    ai_answer="Summary: "+assistant
+    ai_answer="Summary (user emotion "+user_emotion+"): "+assistant
 
 import nest_asyncio
 nest_asyncio.apply()
@@ -260,7 +262,7 @@ def process_video(videofile=0):
                 draw_recognized_text(large_image,'AI answer',ai_answer,y_shift,START_HEIGHT)
         cv2.imshow('Emotions', large_image)
         if cv2.waitKey(5) & 0xFF == 27:
-          break
+            break
 
     face_mesh.close()
     cap.release()
@@ -268,7 +270,7 @@ def process_video(videofile=0):
 
 
 def process_audio():
-    global recognized_text,ai_answer
+    global recognized_text,ai_answer,recognized_emotion
     r = sr.Recognizer()
     print("Ready to capture audio")
     with sr.Microphone() as source:
@@ -282,11 +284,12 @@ def process_audio():
                 if stopEvent.is_set():
                     break
                 #ai_answer=get_completion(recognized_text)
-                print_multiple_emotional_agents2(recognized_text)
+                process_multiple_emotional_agents2(recognized_text,recognized_emotion)
             except Exception as e:
                 print(e)
                 #recognized_text=''
 
+                
 if __name__ == '__main__':
     audio_thread = threading.Thread(target=process_audio)
     audio_thread.start()
