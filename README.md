@@ -3,7 +3,27 @@
 [![pypi package](https://img.shields.io/badge/version-v0.2.0-blue)](https://pypi.org/project/hsemotion)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/classifying-emotions-and-engagement-in-online/facial-expression-recognition-on-affectnet)](https://paperswithcode.com/sota/facial-expression-recognition-on-affectnet?p=classifying-emotions-and-engagement-in-online)
 
-This repository contains code that was developed at the HSE University during the RSF (Russian Science Foundation) project no. 20-71-10010 (Efficient audiovisual analysis of dynamical changes in emotional state based on information-theoretic approach). The framework is being further developed in part with the support of AI Center, NUST MISiS.
+This repository contains code that was developed by A. Savchenko during his research at the HSE University and Sber AI Lab.
+
+## Usage
+Special python packages [hsemotion](https://github.com/HSE-asavchenko/hsemotion) and [hsemotion-onnx](https://github.com/HSE-asavchenko/hsemotion-onnx) were prepared to simplify the usage of our models for face expression recognition and extraction of visual emotional embeddings. They can be installed via pip:
+```
+    pip install hsemotion
+    pip install hsemotion-onnx
+```
+
+In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/affectnet/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
+
+If you want to run our mobile application, please, run the following scripts inside [mobile_app](mobile_app) folder:
+```
+python to_tflite.py
+python to_pytorchlite.py
+```
+
+NOTE!!! I updated the models so that they should work with recent timm library. However, for v0.1 version, please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
+```
+pip install timm==0.4.5
+```
 
 ## News
 - The paper "Facial Expression Recognition with Adaptive Frame Rate based on Multiple Testing Correction" has been accepted as Oral talk at [ICML 2023](https://icml.cc/Conferences/2023). The source code to reproduce the results of this paper are available at this repository, see subsections "Adaptive Frame Rate" at [abaw3_train.ipynb](https://github.com/HSE-asavchenko/face-emotion-recognition/blob/main/src/ABAW/abaw3_train.ipynb) and [train_emotions-pytorch-afew-vgaf.ipynb](https://github.com/HSE-asavchenko/face-emotion-recognition/blob/main/src/affectnet/train_emotions-pytorch-afew-vgaf.ipynb)
@@ -29,26 +49,6 @@ Here are the performance metrics (accuracy on AffectNet, AFEW and VGAF), F1-scor
 | [enet_b2_8_best.pt](models/affectnet_emotions/enet_b2_8_best.pt) | 63.125  | 66.51 | 56.73  | 71.12  | - | - |191 ± 18 | 30 |
 
 Please note, that we report the accuracies for AFEW and VGAF only on the subsets, in which MTCNN detects facial regions. The code contains also computation of overall accuracy on the complete testing set, which is slightly lower due to the absence of faces or failed face detection.
-
-## Usage
-Special python packages [hsemotion](https://github.com/HSE-asavchenko/hsemotion) and [hsemotion-onnx](https://github.com/HSE-asavchenko/hsemotion-onnx) were prepared to simplify the usage of our models for face expression recognition and extraction of visual emotional embeddings. They can be installed via pip:
-```
-    pip install hsemotion
-    pip install hsemotion-onnx
-```
-
-In order to run our code on the datasets, please prepare them firstly using our TensorFlow notebooks: [train_emotions.ipynb](src/affectnet/train_emotions.ipynb), [AFEW_train.ipynb](src/AFEW_train.ipynb) and [VGAF_train.ipynb](src/VGAF_train.ipynb).
-
-If you want to run our mobile application, please, run the following scripts inside [mobile_app](mobile_app) folder:
-```
-python to_tflite.py
-python to_pytorchlite.py
-```
-
-NOTE!!! I updated the models so that they should work with recent timm library. However, for v0.1 version, please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
-```
-pip install timm==0.4.5
-```
 
 
 ## Research papers
