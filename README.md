@@ -26,8 +26,9 @@ pip install timm==0.4.5
 ```
 
 ## News
+- Our models let our team HSEmotion took the second place in the Compound Expression Recognition Challenge and the 3rd place in the Action Unit Detection during the [sixth Affective Behavior Analysis in-the-wild (ABAW) Competition](https://affective-behavior-analysis-in-the-wild.github.io/6th/)
 - The paper "Facial Expression Recognition with Adaptive Frame Rate based on Multiple Testing Correction" has been accepted as Oral talk at [ICML 2023](https://icml.cc/Conferences/2023). The source code to reproduce the results of this paper are available at this repository, see subsections "Adaptive Frame Rate" at [abaw3_train.ipynb](https://github.com/HSE-asavchenko/face-emotion-recognition/blob/main/src/ABAW/abaw3_train.ipynb) and [train_emotions-pytorch-afew-vgaf.ipynb](https://github.com/HSE-asavchenko/face-emotion-recognition/blob/main/src/affectnet/train_emotions-pytorch-afew-vgaf.ipynb)
-- Our models let our team HSE-NN took the first place in the Learning from Synthetic Data (LSD) Challenge and the 3rd place in the Multi-Task Learning (MTL) Challenge in the [fourth Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/eccv-2023-4th-abaw/)
+- Our models let our team HSE-NN took the first place in the Learning from Synthetic Data (LSD) Challenge and the 3rd place in the Multi-Task Learning (MTL) Challenge in the [fourth ABAW Competition](https://ibug.doc.ic.ac.uk/resources/eccv-2023-4th-abaw/)
 - Our models let our team HSE-NN took the 3rd place in the multi-task learning challenge, 4th places in Valence-Arousal and Expression challenges and 5th place in the Action Unite Detection Challenge in the [third Affective Behavior Analysis in-the-wild (ABAW) Competition](https://ibug.doc.ic.ac.uk/resources/cvpr-2022-3rd-abaw/). Our approach is presented in the [paper](https://arxiv.org/abs/2203.13436) accepted at CVPR 2022 ABAW Workshop.
 
 ## Details
