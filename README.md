@@ -20,7 +20,7 @@ python to_tflite.py
 python to_pytorchlite.py
 ```
 
-NOTE!!! I updated the models so that they should work with recent timm library. However, for v0.1 version, please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
+NOTE!!! I updated the models so that they should work with timm library of version 0.9.*. However, for v0.1 version, please be sure that EfficientNet models for PyTorch are based on old timm 0.4.5 package, so that exactly this version should be installed by the following command:
 ```
 pip install timm==0.4.5
 ```
